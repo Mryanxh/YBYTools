@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="AlphaYanTools.Kaoqin.DayControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AlphaYanTools.Kaoqin">
+    <StackPanel Orientation="Vertical">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="1" Margin="5" Grid.Column="0" HorizontalAlignment="Center"/>
+            <Border Grid.Column="1" Background="Red" Width="5" Height="5" HorizontalAlignment="Right" Margin="5"/>
+        </Grid>
+        <Grid>
+            <TextBlock Margin="5">
+                <Run Text="上班:"/>
+                <Run Text="9:01" FontWeight="Bold"/>
+            </TextBlock>
+        </Grid>
+        <Grid>
+            <TextBlock Margin="5">
+                <Run Text="下班:"/>
+                <Run Text="9:01" FontWeight="Bold"/>
+            </TextBlock>
+        </Grid>
+    </StackPanel>
+</UserControl>
