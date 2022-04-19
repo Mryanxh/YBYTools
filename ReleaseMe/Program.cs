@@ -11,35 +11,64 @@ namespace ReleaseMe
 {
     internal class Program
     {
+        //忽略的文件类型
         static string[] IgnoreFile = new string[] {".pdb", ".xml" };
+        
         static void Main(string[] args)
         {
-            string path = Directory.GetCurrentDirectory();
-            List<string> files = Directory.GetFiles(path).ToList();
-            List<string> UpdateFiles = new List<string>();
-            foreach (string file in files)
+            try
             {
-                if (IgnoreFile.Contains(Path.GetExtension(file)))
+                string path = Directory.GetCurrentDirectory();
+                List<string> files = Directory.GetFiles(path).ToList();
+                List<string> UpdateFiles = new List<string>();
+                //生成MD数据
+                foreach (string file in files)
                 {
-                    continue;
+                    if (IgnoreFile.Contains(Path.GetExtension(file)))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        UpdateFiles.Add(file);
+                    }
                 }
-                else
+                //生成所有文件信息
+                List<FileInfo> UpdateInfo = new List<FileInfo>();
+                foreach (string file in UpdateFiles)
                 {
-                    UpdateFiles.Add(file);
+                    UpdateInfo.Add(new FileInfo()
+                    {
+                        Name = Path.GetFileName(file),
+                        MD5 = GetMD5WithFilePath(file),
+                    });
                 }
+                Console.Write("请输入更新日志:");
+                string VersionUpdateInfo = Console.ReadLine();
+
+                SoftwareVersion newVersionInfo = new SoftwareVersion()
+                {
+                    FileInfo = UpdateInfo,
+                    MustUpdate = true,
+                    Updatetime = DateTime.Now,
+                    UpdateInfo = VersionUpdateInfo,
+                    VersionStr = "1.0.0.1"
+                };
+
+                //保存成本地文件
+                string newVersionStr = JsonConvert.SerializeObject(newVersionInfo, Formatting.Indented);
+                File.WriteAllText($"{path}\\Release.info", newVersionStr, Encoding.UTF8);
+
+                Console.WriteLine("文件生成成功,请及时上传至服务器！");
             }
-            
-            List<FileInfo> UpdateInfo = new List<FileInfo>();
-            foreach (string file in UpdateFiles)
+            catch (Exception ex)
             {
-                UpdateInfo.Add(new FileInfo()
-                {
-                    Name = Path.GetFileName(file),
-                    MD5 = GetMD5WithFilePath(file),
-                });
+                Console.WriteLine(ex.Message);
             }
-            string UpdateString = JsonConvert.SerializeObject(UpdateInfo, Formatting.Indented);
-            File.WriteAllText($"{path}\\Release.info", UpdateString, Encoding.UTF8);
+            finally
+            {
+                Console.Read();
+            }
         }
         static public string GetMD5WithFilePath(string filePath)
         {
@@ -52,7 +81,19 @@ namespace ReleaseMe
         }
     }
 
-    class FileInfo
+    public class SoftwareVersion
+    {
+        public DateTime Updatetime { get; set; }
+
+        public string VersionStr { get; set; }
+
+        public string UpdateInfo { get; set; }
+
+        public bool MustUpdate { get; set; }
+
+        public List<FileInfo> FileInfo { get; set; }
+    }
+    public class FileInfo
     {
         public string Name { get; set; }
         public string MD5 { get; set; }

@@ -1,7 +1,9 @@
 ﻿using Spire.Pdf;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -62,9 +64,11 @@ namespace AlphaYanTools
                             for (int i = 0; i < listImages.Count; i++)
                             {
                                 System.Drawing.Image image = listImages[i];
-                                image.Save($"{fileName}_{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.png", ImageFormat.Png);
+                                image.Save($"{DateTime.Now.ToString("yyyyMMdd")}\\{fileName}_{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.png", ImageFormat.Png);
                             }
                         }
+                        //打开图片保存路径
+                        Process.Start($"{Directory.GetCurrentDirectory()}\\{DateTime.Now.ToString("yyyyMMdd")}");
                     }
                 }
             }
