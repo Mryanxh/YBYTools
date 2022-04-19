@@ -1,5 +1,5 @@
-﻿{
-  "Updatetime": "2022-04-18T16:33:36.2524447+08:00",
+{
+  "Updatetime": "2022-04-19T10:37:09.0448729+08:00",
   "VersionStr": "1.0.0.1",
   "UpdateInfo": "1",
   "MustUpdate": true,
@@ -18,7 +18,7 @@
     },
     {
       "Name": "ReleaseMe.exe",
-      "MD5": "AB77872DEF3E30D9D3F8B48B8A005AAE"
+      "MD5": "49C4D6991E110168D9AC87EF1ECF0D30"
     },
     {
       "Name": "Spire.License.dll",
