@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AlphaYanTools" d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
         mc:Ignorable="d"
-        Title="{Binding Path=Title}" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="{Binding Path=Title}" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="打开" Visibility="Collapsed">
@@ -46,7 +46,7 @@
             </StatusBarItem>
             <Separator Grid.Column="1"/>
             <StatusBarItem Grid.Column="0">
-                <TextBlock Text="TestUpload"/>
+                <TextBlock Text="{Binding Path=ViewMessage,Mode=OneWay}"/>
             </StatusBarItem>
         </StatusBar>
         <Grid x:Name="centerGrid">

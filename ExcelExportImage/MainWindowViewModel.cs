@@ -15,8 +15,19 @@
             get { return AlphaUtil.AppName; }
         }
 
+        private string viewMessage;
+        public string ViewMessage
+        {
+            get { return viewMessage; }
+            set
+            {
+                viewMessage = value;
+                OnPropertyChanged(nameof(ViewMessage));
+            }
+        }
         public MainWindowViewModel()
         {
+            ViewMessage = "Hello World!";
         }
     }
 }
