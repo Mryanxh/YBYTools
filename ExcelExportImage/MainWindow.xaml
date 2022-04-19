@@ -8,18 +8,22 @@
         Title="{Binding Path=Title}" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="打开">
+            <MenuItem Header="打开" Visibility="Collapsed">
 
             </MenuItem>
             <MenuItem Header="提取图片">
-                <MenuItem Header="提取Excel中所有图片" Click="excelimg_Click" ToolTip="for lifei8838"/>
-                <MenuItem Header="提取Pdf中所有图片" Click="pdfimg_Click" ToolTip="for lifei8838"/>
+                <MenuItem Header="提取Excel中所有图片" Click="MenuItem_Click" Tag="ExportExcelImg" ToolTip="for lifei8838"/>
+                <MenuItem Header="提取Pdf中所有图片" Click="MenuItem_Click" Tag="ExportPDFImg" ToolTip="for lifei8838"/>
             </MenuItem>
-            <MenuItem Header="设置">
+            <MenuItem Header="内网">
+                <MenuItem Header="信息部官网" Click="MenuItem_Click" Tag="WWWXZYBY"/>
+                <MenuItem Header="常用文件|工具下载" Click="MenuItem_Click" Tag="FILESXZYBY"/>
+            </MenuItem>
+            <MenuItem Header="设置" Visibility="Collapsed">
 
             </MenuItem>
             <MenuItem Header="关于">
-                <MenuItem Header="检查更新" Click="CheckUpdate_Click"/>
+                <MenuItem Header="检查更新" Tag="CheckUpdate"/>
             </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
@@ -37,7 +41,7 @@
             <StatusBarItem Grid.Column="0">
                 <TextBlock>
                 <Run Text="Code by AlphaYan" Foreground="DarkGray"/>
-                <Run Text="{Binding Path=VersionStr}" Foreground="IndianRed"/>
+                <Run Text="{Binding Path=VersionStr,Mode=OneTime}" Foreground="IndianRed"/>
                 </TextBlock>
             </StatusBarItem>
             <Separator Grid.Column="1"/>
