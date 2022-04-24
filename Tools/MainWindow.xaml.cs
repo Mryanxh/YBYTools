@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using AlphaYanTools.Kaoqin;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -28,7 +29,7 @@ namespace AlphaYanTools
                 switch (menu.Tag)
                 {
                     case "ExportPDFImg":
-                        ExportPDFImg(); 
+                        ExportPDFImg();
                         break;
                     case "ExportExcelImg":
                         ExportExcelImg();
@@ -41,6 +42,12 @@ namespace AlphaYanTools
                         break;
                     case "CheckUpdate":
                         CheckUpdate();
+                        break;
+                    case "CLOUDXZYBY":
+                        OpenPrivateUrl("http://cloud.xzyby.com");
+                        break;
+                    case "CheckKaoQin":
+                        CheckKaoQin();
                         break;
                     default:
                         MessageBox.Show($"{menu.Header}功能还没写呢");
@@ -82,6 +89,12 @@ namespace AlphaYanTools
             {
                 MessageBox.Show("您必须在园博园内网才能够打开该网址");
             }
+        }
+
+        private void CheckKaoQin()
+        {
+            centerGrid.Children.Clear();
+            centerGrid.Children.Add(new ViewKaoQin());
         }
     }
 }

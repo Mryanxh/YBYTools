@@ -11,12 +11,16 @@
             <MenuItem Header="打开" Visibility="Collapsed">
 
             </MenuItem>
+            <MenuItem Header="考勤">
+                <MenuItem Header="查看考勤" Click="MenuItem_Click" Tag="CheckKaoQin"/>
+            </MenuItem>
             <MenuItem Header="提取图片">
                 <MenuItem Header="提取Excel中所有图片" Click="MenuItem_Click" Tag="ExportExcelImg" ToolTip="for lifei8838"/>
                 <MenuItem Header="提取Pdf中所有图片" Click="MenuItem_Click" Tag="ExportPDFImg" ToolTip="for lifei8838"/>
             </MenuItem>
             <MenuItem Header="内网">
                 <MenuItem Header="信息部官网" Click="MenuItem_Click" Tag="WWWXZYBY"/>
+                <MenuItem Header="信息部私有云" Click="MenuItem_Click" Tag="CLOUDXZYBY"/>
                 <MenuItem Header="常用文件|工具下载" Click="MenuItem_Click" Tag="FILESXZYBY"/>
             </MenuItem>
             <MenuItem Header="设置" Visibility="Collapsed">

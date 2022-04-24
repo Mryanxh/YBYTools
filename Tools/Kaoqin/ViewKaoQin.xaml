@@ -12,10 +12,11 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Button Content="查看"/>
-            <Button Content="查看"/>
-        </StackPanel>
+        <Grid Grid.Row="0" Margin="5">
+            <TextBlock Text="Access_Token:" HorizontalAlignment="Left" Width="100"/>
+            <TextBox Margin="110,0,40,0"/>
+            <Button Content="查看" Width="30" HorizontalAlignment="Right"/>
+        </Grid>
         <Border Grid.Row="1">
             <Grid>
                 <Grid.RowDefinitions>
