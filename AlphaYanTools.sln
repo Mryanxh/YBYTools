@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlphaYanTools", "ExcelExportImage\AlphaYanTools.csproj", "{721B3743-967E-4F0E-8318-8A5F6E2929AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlphaYanTools", "Tools\AlphaYanTools.csproj", "{721B3743-967E-4F0E-8318-8A5F6E2929AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Update", "Update\Update.csproj", "{50957125-43E1-4170-A5C8-59CBF2360EE8}"
 EndProject
