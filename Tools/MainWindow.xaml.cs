@@ -50,7 +50,7 @@ namespace AlphaYanTools
                         CheckKaoQin();
                         break;
                     default:
-                        MessageBox.Show($"{menu.Header}功能还没写呢");
+                        MessageBox.Show(menu.Tag.ToString());
                         break;
                 }
             }

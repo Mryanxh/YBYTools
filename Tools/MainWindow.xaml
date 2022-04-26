@@ -14,6 +14,9 @@
             <MenuItem Header="考勤">
                 <MenuItem Header="查看考勤" Click="MenuItem_Click" Tag="CheckKaoQin"/>
             </MenuItem>
+            <MenuItem Header="密码管理">
+                <MenuItem Header="密码管理器" Click="MenuItem_Click" Tag="PasswordManage"/>
+            </MenuItem>
             <MenuItem Header="提取图片">
                 <MenuItem Header="提取Excel中所有图片" Click="MenuItem_Click" Tag="ExportExcelImg" ToolTip="for lifei8838"/>
                 <MenuItem Header="提取Pdf中所有图片" Click="MenuItem_Click" Tag="ExportPDFImg" ToolTip="for lifei8838"/>
@@ -27,7 +30,8 @@
 
             </MenuItem>
             <MenuItem Header="关于">
-                <MenuItem Header="检查更新" Tag="CheckUpdate"/>
+                <MenuItem Header="检查更新" Click="MenuItem_Click" Tag="CheckUpdate"/>
+                <MenuItem Header="Test" Click="MenuItem_Click"/>
             </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
