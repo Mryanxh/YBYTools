@@ -20,9 +20,23 @@ namespace AlphaYanTools.Kaoqin
     /// </summary>
     public partial class DayControl : UserControl
     {
+        public string Day { get; set; }
+
         public DayControl()
         {
             InitializeComponent();
+            this.DataContext = this;
+        }
+
+        public void SetDK(List<DateTime> source)
+        {
+            source = source.OrderBy(x => x.Hour).ToList();
+            foreach (DateTime dk in source)
+            {
+                TextBlock txt = new TextBlock();
+                txt.Text = dk.ToString("HH:mm:ss");
+                dktime.Children.Add(txt);
+            }
         }
     }
 }

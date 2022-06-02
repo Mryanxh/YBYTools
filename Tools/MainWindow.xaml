@@ -5,14 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AlphaYanTools" d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
         mc:Ignorable="d"
-        Title="{Binding Path=Title}" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="{Binding Path=Title}" Height="550" Width="1000" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="打开" Visibility="Collapsed">
 
             </MenuItem>
-            <MenuItem Header="考勤">
-                <MenuItem Header="查看考勤" Click="MenuItem_Click" Tag="CheckKaoQin"/>
+            <MenuItem Header="考勤" Click="MenuItem_Click" Tag="CheckKaoQin">
             </MenuItem>
             <MenuItem Header="密码管理">
                 <MenuItem Header="密码管理器" Click="MenuItem_Click" Tag="PasswordManage"/>

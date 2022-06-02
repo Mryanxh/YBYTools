@@ -26,16 +26,23 @@ namespace AlphaYanTools.Kaoqin
     {
         private readonly string BaseUrl = "http://222.187.120.186:8288/selfservice/att/get_data_info/?";
         private readonly string HolidayFileName = "holiday.txt";
-        string Cookie = String.Empty;
 
         public ViewKaoQin()
         {
             InitializeComponent();
+            txt_cookie.Text = "csrftoken=VS6rzoYY5oFEV6i6oK7eIvnRVaY1wLFvyMJIgdT62RdKwp9qjKyzW8lqEwUHUt0E; sessionid=bkatvojhl29acpvrcudpdmfkg4hitvyg";
         }
-
-        private void SetCookie(string cookie)
+        private void btn_check_Click(object sender, RoutedEventArgs e)
         {
-            this.Cookie = cookie;
+            if (string.IsNullOrEmpty(txt_cookie.Text))
+            {
+                MessageBox.Show("请输入Cookie");
+                return;
+            }
+            else
+            {
+                LoadKaoQin(DateTime.Now.Month);
+            }
         }
         private void LoadKaoQin(int month)
         {
@@ -44,10 +51,10 @@ namespace AlphaYanTools.Kaoqin
             string startTime = StartTime.ToString("yyyy-MM-dd");
             string endTime = EndTime.ToString("yyyy-MM-dd");
             
-            if (Cookie != null)
+            if (txt_cookie.Text != null)
             {
                 string Url = $"{BaseUrl}info_type=att_data_form&page=1&limit=100&st={startTime}&et={endTime}";
-                string result = HttpPost(Url, Cookie);
+                string result = HttpPost(Url, txt_cookie.Text);
                 if (result != null && !string.IsNullOrEmpty(result))
                 {
                     ResultModel resultModel = JsonConvert.DeserializeObject<ResultModel>(result);
@@ -57,70 +64,63 @@ namespace AlphaYanTools.Kaoqin
                     {
                         Holidays = JsonConvert.DeserializeObject<List<HolidayModel>>(File.ReadAllText(HolidayFileName));
                     }
-                    PrintMonth(StartTime, EndTime, Source, Holidays);
+                    LoadDate(Source, Holidays);
+                }
+                else
+                {
+                    MessageBox.Show("读取失败");
                 }
             }
         }
-
-        void PrintMonth(DateTime StartTime, DateTime EndTime, List<DataModel> Source, List<HolidayModel> Holiday)
+        private void LoadDate(List<DataModel> source , List<HolidayModel> holiday)
         {
-            for (DateTime dt = StartTime; dt < EndTime; dt = dt.AddDays(1))
+            if (source.Count > 0)
             {
-                if ((int)dt.DayOfWeek == 6 || (int)dt.DayOfWeek == 0)
-                    Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write($"{dt:MM-dd}\t");
-                HolidayModel holiday = Holiday.Find(s => s.Date.Date == dt.Date);
-                if (null != holiday && holiday.Holiday)
+                txt_name.Text = source[0].Username;
+                txt_id.Text = source[0].Pin;
+            }
+            int startindex = (int)DateTime.Now.DayOfWeek;
+            int days = (DateTime.Now.AddMonths(1).AddDays(-2) - DateTime.Now.AddDays(-DateTime.Now.Day)).Days;
+            int indexrow = 0;
+            for (int i = 0; i < days; i++)
+            {
+                DayControl day = new DayControl();
+                day.Day = $"{i + 1}";
+                if (startindex == 7)
                 {
-                    Console.Write(holiday.Name);
+                    startindex = 0;
                 }
-                Console.Write("\t");
-                List<DataModel> OneDay = Source.FindAll(s => s.TTime.Day == dt.Day);
-                DataModel up = OneDay.Find(s => s.TTime.Hour < 12);
-                if (null != up)
+                List<DataModel> kaoqin = source.FindAll(s => s.TTime.Day == DateTime.Now.AddDays(-DateTime.Now.Day + i + 1).Day);
+                if (kaoqin.Count > 0)
                 {
-                    if (up.TTime < new DateTime(up.TTime.Year, up.TTime.Month, up.TTime.Day, 9, 30, 00))
+                    List<DateTime> dksj = new List<DateTime>();
+                    foreach (DataModel dm in kaoqin)
                     {
-                        Console.ForegroundColor = ConsoleColor.Green;
+                        dksj.Add(dm.TTime);
                     }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    }
-                    Console.Write(up.TTime.ToString("HH:mm:ss"));
-                    Console.ResetColor();
+                    day.SetDK(dksj);
                 }
-                Console.Write("-");
-                DataModel down = OneDay.Find(s => s.TTime.Hour > 12);
-                if (null != down)
+                Grid.SetRow(day, indexrow);
+                Grid.SetColumn(day, startindex);
+                grid_Center.Children.Add(day);
+                if (DateTime.Now.AddDays(i).DayOfWeek == DayOfWeek.Saturday)
                 {
-                    if (down.TTime > new DateTime(down.TTime.Year, down.TTime.Month, down.TTime.Day, 17, 00, 00))
-                    {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    }
-                    Console.Write(down.TTime.ToString("HH:mm:ss"));
-                    Console.ResetColor();
+                    indexrow++;
                 }
-                Console.WriteLine();
+                startindex++;
             }
         }
 
         string HttpPost(string posturl, string cookie)
         {
             Encoding encoding = Encoding.GetEncoding("utf-8");
-            // 准备请求...
             try
             {
                 HttpWebRequest request = WebRequest.Create(posturl) as HttpWebRequest;
-                CookieContainer cookieContainer = new CookieContainer();
-                request.CookieContainer = cookieContainer;
-                request.AllowAutoRedirect = true;
-                request.Method = HttpMethod.Post.Method;
+                request.Method = HttpMethod.Get.Method;
                 request.Headers.Add("Cookie", cookie);
+                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.30";
+                request.Referer = "http://222.187.120.186:8288/selfservice/att/att_data_form/";
                 HttpWebResponse response = request.GetResponse() as HttpWebResponse;
                 Stream instream = response.GetResponseStream();
                 StreamReader sr = new StreamReader(instream);
@@ -152,6 +152,7 @@ namespace AlphaYanTools.Kaoqin
 
             return retString;
         }
+
 
     }
 }
