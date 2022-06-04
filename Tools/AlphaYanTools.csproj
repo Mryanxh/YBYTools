@@ -103,6 +103,7 @@
     <Compile Include="ExportPdfImg.xaml.cs">
       <DependentUpon>ExportPdfImg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Kaoqin\ViewKaoQinViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

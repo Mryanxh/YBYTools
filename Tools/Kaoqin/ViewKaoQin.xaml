@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:AlphaYanTools"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -24,11 +23,13 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="姓名:"/>
-                    <TextBlock x:Name="txt_name" FontWeight="Bold" Margin="5,0,0,0"/>
-                    <TextBlock Text="工号:"/>
-                    <TextBlock x:Name="txt_id" FontWeight="Bold" Margin="5,0,0,0"/>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <TextBlock Text="姓名:" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="txt_name" FontWeight="Bold" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="工号:" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="txt_id" FontWeight="Bold" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="月份:" VerticalAlignment="Center"/>
+                    <ComboBox Width="60" Name="com_month" VerticalAlignment="Center" ItemsSource="{Binding Path=MonthSource}" DisplayMemberPath="Name" SelectedItem="{Binding Path=MonthSelected}"/>
                 </StackPanel>
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>

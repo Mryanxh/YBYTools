@@ -24,14 +24,19 @@ namespace AlphaYanTools.Kaoqin
     /// </summary>
     public partial class ViewKaoQin : UserControl
     {
+        public event Action<string> LogPrint;
+
         private readonly string BaseUrl = "http://222.187.120.186:8288/selfservice/att/get_data_info/?";
         private readonly string HolidayFileName = "holiday.txt";
-
+        ViewKaoQinViewModel VModel;
         public ViewKaoQin()
         {
             InitializeComponent();
+            VModel = new ViewKaoQinViewModel();
+            this.DataContext = VModel;
             txt_cookie.Text = "csrftoken=VS6rzoYY5oFEV6i6oK7eIvnRVaY1wLFvyMJIgdT62RdKwp9qjKyzW8lqEwUHUt0E; sessionid=bkatvojhl29acpvrcudpdmfkg4hitvyg";
         }
+        
         private void btn_check_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(txt_cookie.Text))
@@ -64,7 +69,6 @@ namespace AlphaYanTools.Kaoqin
                     {
                         Holidays = JsonConvert.DeserializeObject<List<HolidayModel>>(File.ReadAllText(HolidayFileName));
                     }
-                    LoadDate(Source, Holidays);
                 }
                 else
                 {
@@ -72,48 +76,67 @@ namespace AlphaYanTools.Kaoqin
                 }
             }
         }
-        private void LoadDate(List<DataModel> source , List<HolidayModel> holiday)
+        private void LoadDate(int month)
         {
-            if (source.Count > 0)
-            {
-                txt_name.Text = source[0].Username;
-                txt_id.Text = source[0].Pin;
-            }
-            int startindex = (int)DateTime.Now.DayOfWeek;
-            int days = (DateTime.Now.AddMonths(1).AddDays(-2) - DateTime.Now.AddDays(-DateTime.Now.Day)).Days;
+            DateTime Month = new DateTime(DateTime.Now.Year, month, DateTime.Now.Day);
+            int days = (Month.AddMonths(1).AddDays(-Month.AddMonths(1).Day) - Month.AddDays(-Month.Day)).Days;
+            int indexday = 0;
             int indexrow = 0;
-            for (int i = 0; i < days; i++)
+            int indexcol = (int)Month.AddDays(-Month.Day).DayOfWeek;
+            do
             {
-                DayControl day = new DayControl();
-                day.Day = $"{i + 1}";
-                if (startindex == 7)
+                DayControl day = new DayControl
                 {
-                    startindex = 0;
-                }
-                List<DataModel> kaoqin = source.FindAll(s => s.TTime.Day == DateTime.Now.AddDays(-DateTime.Now.Day + i + 1).Day);
-                if (kaoqin.Count > 0)
-                {
-                    List<DateTime> dksj = new List<DateTime>();
-                    foreach (DataModel dm in kaoqin)
-                    {
-                        dksj.Add(dm.TTime);
-                    }
-                    day.SetDK(dksj);
-                }
+                    Day = Month.AddDays(-Month.Day + indexday + 1).ToString("yyyy-MM-dd")
+                };
                 Grid.SetRow(day, indexrow);
-                Grid.SetColumn(day, startindex);
+                Grid.SetColumn(day, indexcol++);
                 grid_Center.Children.Add(day);
-                if (DateTime.Now.AddDays(i).DayOfWeek == DayOfWeek.Saturday)
+                if (indexcol == 7)
                 {
                     indexrow++;
+                    indexcol = 0;
                 }
-                startindex++;
-            }
+                indexday++;
+            } while (indexday < days);
+
+            //if (source.Count > 0)
+            //{
+            //    txt_name.Text = source[0].Username;
+            //    txt_id.Text = source[0].Pin;
+            //}
+            
+            
+            //int indexrow = 0;
+            //for (int i = 0; i < days; i++)
+            //{
+                
+            //    if (startindex == 7)
+            //    {
+            //        startindex = 0;
+            //    }
+            //    List<DataModel> kaoqin = source.FindAll(s => s.TTime.Day == DateTime.Now.AddDays(-DateTime.Now.Day + i + 1).Day);
+            //    if (kaoqin.Count > 0)
+            //    {
+            //        List<DateTime> dksj = new List<DateTime>();
+            //        foreach (DataModel dm in kaoqin)
+            //        {
+            //            dksj.Add(dm.TTime);
+            //        }
+            //        day.SetDK(dksj);
+            //    }
+                
+                
+            //    if (DateTime.Now.AddDays(i).DayOfWeek == DayOfWeek.Saturday)
+            //    {
+            //        indexrow++;
+            //    }
+            //    startindex++;
+            //}
         }
 
         string HttpPost(string posturl, string cookie)
         {
-            Encoding encoding = Encoding.GetEncoding("utf-8");
             try
             {
                 HttpWebRequest request = WebRequest.Create(posturl) as HttpWebRequest;
@@ -130,11 +153,22 @@ namespace AlphaYanTools.Kaoqin
             }
             catch (Exception ex)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(ex.Message);
-                Console.ResetColor();
+                LogPrint(ex.Message);
                 return string.Empty;
             }
         }
+        private void com_month_Selected(object sender, RoutedEventArgs e)
+        {
+            LoadDate(com_month.SelectedIndex + 1);
+        }
+    }
+
+    class MonthComb
+    {
+        public int Index { get; set; }
+
+        public string Month { get; set; }
+
+        public string Name { get; set; }
     }
 }
